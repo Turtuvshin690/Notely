@@ -1,0 +1,4 @@
+{
+  "identifier": "default",
+  "permissions": ["fs:allow-read-dir", "fs:allow-read-text-file", "fs:allow-write-text-file", "fs:allow-remove-file", "fs:allow-rename-file", "fs:allow-mkdir", "dialog:allow-open", "store:allow-load", "store:allow-save"]
+}
