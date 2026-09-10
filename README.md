@@ -18,3 +18,7 @@ npm run tauri build
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Out of scope (v1)
+
+External file watcher + reload toast: filed as follow-up, not implemented in MVP.

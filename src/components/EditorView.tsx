@@ -2,24 +2,58 @@ import { useEffect, useRef, useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { markdown } from '@codemirror/lang-markdown'
 import ReactMarkdown from 'react-markdown'
+// CSP note: tauri.conf.json keeps "csp": null because react-markdown renders
+// safe defaults (no rehype-raw / no dangerouslySetInnerHTML), so no raw HTML
+// execution path exists. Add a minimal CSP if rehype-raw is ever introduced.
 import { readTextFile, writeTextFile } from '../lib/fs'
 export default function EditorView({ path }: { path: string }) {
   const [text, setText] = useState('')
   const [state, setState] = useState<'saved' | 'saving' | 'error'>('saved')
-  const t = useRef<number>(0)
-  useEffect(() => { readTextFile(path).then(setText).catch(() => setState('error')) }, [path])
-  const onChange = (v: string) => {
-    setText(v); setState('saving')
+  const t = useRef<number | undefined>(undefined)
+  const pending = useRef<{ path: string; text: string } | null>(null)
+  const gen = useRef(0)
+  useEffect(() => {
+    const g = ++gen.current
+    let live = true
+    window.clearTimeout(t.current)
+    readTextFile(path).then((c) => { if (live && gen.current === g) { setText(c); setState('saved') } })
+      .catch(() => { if (live && gen.current === g) setState('error') })
+    return () => {
+      live = false
+      // path change / unmount: cancel debounce, flush pending draft to its own file (no silent loss)
+      window.clearTimeout(t.current)
+      const p = pending.current
+      pending.current = null
+      if (p) writeTextFile(p.path, p.text).catch(() => {})
+    }
+  }, [path])
+  const schedule = (p: string, v: string) => {
+    const g = gen.current
     window.clearTimeout(t.current)
     t.current = window.setTimeout(async () => {
-      try { await writeTextFile(path, v); setState('saved') } catch { setState('error') }
+      try { await writeTextFile(p, v); pending.current = null; if (gen.current === g) setState('saved') }
+      catch { if (gen.current === g) setState('error') }
     }, 500)
+  }
+  const onChange = (v: string) => {
+    setText(v); setState('saving')
+    pending.current = { path, text: v }
+    schedule(path, v)
+  }
+  const retry = async () => {
+    const p = pending.current ?? { path, text }
+    setState('saving')
+    try { await writeTextFile(p.path, p.text); pending.current = null; setState('saved') }
+    catch { setState('error') }
   }
   return (
     <div style={{ display: 'flex', flex: 1 }}>
       <div style={{ flex: 1 }}><CodeMirror value={text} extensions={[markdown()]} onChange={onChange} /></div>
       <div style={{ flex: 1, padding: 12, borderLeft: '1px solid #eee' }}><ReactMarkdown>{text}</ReactMarkdown></div>
-      <div style={{ position: 'fixed', bottom: 8, right: 12 }}>{state}</div>
+      <div style={{ position: 'fixed', bottom: 8, right: 12 }}>
+        {state}
+        {state === 'error' && <button onClick={retry} style={{ marginLeft: 8 }}>Retry</button>}
+      </div>
     </div>
   )
 }
