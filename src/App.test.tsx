@@ -1,13 +1,18 @@
-import { describe, expect, it } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+vi.mock('@tauri-apps/plugin-fs', () => ({
+  readDir: async () => [],
+  readTextFile: async () => '',
+  writeTextFile: async () => {},
+}))
+vi.mock('@tauri-apps/plugin-store', () => ({
+  load: async () => ({ get: async () => null, set: async () => {}, save: async () => {} }),
+}))
 import App from './App'
 
-describe('App scaffold', () => {
-  it('renders and counts clicks', () => {
+describe('App vault', () => {
+  it('shows Open folder when no vault saved', async () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: /get started/i })).toBeTruthy()
-    const btn = screen.getByRole('button', { name: /count is 0/i })
-    fireEvent.click(btn)
-    expect(screen.getByRole('button', { name: /count is 1/i })).toBeTruthy()
+    expect(await screen.findByRole('button', { name: /open folder/i })).toBeTruthy()
   })
 })
