@@ -23,9 +23,11 @@ export default function SearchBar({ tree, onSelect }: { tree: TreeNode[]; onSele
     n.name.toLowerCase().includes(needle) || (contents[n.path] ?? '').toLowerCase().includes(needle)
   ).slice(0, 20) : []
   return (
-    <div>
-      <input placeholder="Search" value={q} onChange={e => setQ(e.target.value)} style={{ width: '100%' }} />
-      {res.map(r => <div key={r.path} onClick={() => onSelect(r.path)}>{r.name}</div>)}
+    <div className="search-wrap">
+      <input className="search" placeholder="Search notes" value={q} onChange={e => setQ(e.target.value)} />
+      {res.length > 0 && <div className="search-results">
+        {res.map(r => <div className="search-hit" key={r.path} onClick={() => onSelect(r.path)}>{r.name}</div>)}
+      </div>}
     </div>
   )
 }

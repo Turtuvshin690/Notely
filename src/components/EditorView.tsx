@@ -47,12 +47,13 @@ export default function EditorView({ path }: { path: string }) {
     catch { setState('error') }
   }
   return (
-    <div style={{ display: 'flex', flex: 1 }}>
-      <div style={{ flex: 1 }}><CodeMirror value={text} extensions={[markdown()]} onChange={onChange} /></div>
-      <div style={{ flex: 1, padding: 12, borderLeft: '1px solid #eee' }}><ReactMarkdown>{text}</ReactMarkdown></div>
-      <div style={{ position: 'fixed', bottom: 8, right: 12 }}>
-        {state}
-        {state === 'error' && <button onClick={retry} style={{ marginLeft: 8 }}>Retry</button>}
+    <div className="editor">
+      <div className="pane edit"><CodeMirror value={text} extensions={[markdown()]} onChange={onChange} /></div>
+      <div className="pane preview"><div className="preview-inner"><ReactMarkdown>{text}</ReactMarkdown></div></div>
+      <div className="status">
+        <span className={`dot ${state}`} />
+        <span>{state}</span>
+        {state === 'error' && <button className="btn" onClick={retry}>Retry</button>}
       </div>
     </div>
   )

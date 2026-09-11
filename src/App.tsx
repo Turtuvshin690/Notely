@@ -7,10 +7,18 @@ import type { TreeNode } from './lib/fs'
 import { load } from '@tauri-apps/plugin-store'
 export function AppShell({ vault, tree, refresh }: { vault: string; tree: TreeNode[]; refresh: () => void }) {
   const [sel, setSel] = useState<string | null>(null)
+  const vaultName = vault.split(/[/\\]/).filter(Boolean).pop() ?? vault
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <div><SearchBar tree={tree} onSelect={setSel} /><Sidebar vault={vault} tree={tree} onSelect={setSel} onChanged={refresh} /></div>
-      {sel ? <EditorView key={sel} path={sel} /> : <div style={{ padding: 24 }}>Select a note</div>}
+    <div className="app">
+      <aside className="side">
+        <div className="brand"><span className="brand-mark" />Notely</div>
+        <div className="vault-name" title={vault}>{vaultName}</div>
+        <SearchBar tree={tree} onSelect={setSel} />
+        <Sidebar vault={vault} tree={tree} selected={sel} onSelect={setSel} onChanged={refresh} />
+      </aside>
+      <main className="main">
+        {sel ? <EditorView key={sel} path={sel} /> : <div className="empty"><strong>Select a note</strong>Choose a note from the sidebar, or create a new one.</div>}
+      </main>
     </div>
   )
 }
@@ -45,16 +53,25 @@ export default function App() {
     await pick()
   }
   if (!vault) return (
-    <div style={{ padding: 24 }}>
-      <button onClick={pick}>Open folder</button>
-      {error && <div role="alert">{error} <button onClick={pick}>Retry</button></div>}
+    <div className="center">
+      <div className="card">
+        <h1>Notely</h1>
+        <p>Your local notes, simply kept. Pick a folder to use as your vault.</p>
+        <button className="btn btn-primary" onClick={pick}>Open folder</button>
+        {error && <div className="alert" role="alert"><span>{error}</span><button className="btn" onClick={pick}>Retry</button></div>}
+      </div>
     </div>
   )
   if (error) return (
-    <div style={{ padding: 24 }}>
-      <div role="alert">{error}</div>
-      <button onClick={() => vault && void refresh(vault)}>Retry</button>
-      <button onClick={repick}>Pick another folder</button>
+    <div className="center">
+      <div className="card">
+        <h1>Notely</h1>
+        <p>{error}</p>
+        <div className="actions-row">
+          <button className="btn" onClick={() => vault && void refresh(vault)}>Retry</button>
+          <button className="btn" onClick={repick}>Pick another folder</button>
+        </div>
+      </div>
     </div>
   )
   return <AppShell vault={vault} tree={tree} refresh={() => void refresh(vault)} />
