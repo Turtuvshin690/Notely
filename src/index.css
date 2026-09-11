@@ -445,6 +445,30 @@ button, input, textarea {
   padding: 0 28px;
 }
 
+/* CodeMirror ships its own light gutter/highlight colors — bind them to the theme. */
+.pane.edit .cm-editor .cm-gutters {
+  background: transparent;
+  border-right: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.pane.edit .cm-editor .cm-activeLineGutter {
+  background: var(--hover);
+  color: var(--text-h);
+}
+
+.pane.edit .cm-editor .cm-activeLine {
+  background: var(--hover);
+}
+
+.pane.edit .cm-editor .cm-selectionBackground {
+  background: var(--accent-soft);
+}
+
+.pane.edit .cm-editor .cm-cursor {
+  border-left-color: var(--accent);
+}
+
 .pane.preview {
   padding: 26px 34px 60px;
 }
