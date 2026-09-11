@@ -32,5 +32,5 @@ export const removeNote = (p: string) => rm(p)
 export const mkdirDir = (p: string) => mkdir(p, { recursive: true })
 export async function pickVault(): Promise<string | null> {
   const sel = await open({ directory: true })
-  return typeof sel === 'string' ? sel : null
+  return typeof sel === 'string' ? sel : Array.isArray(sel) ? sel[0] ?? null : null
 }

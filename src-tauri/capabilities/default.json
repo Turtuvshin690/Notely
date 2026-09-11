@@ -1,4 +1,4 @@
 {
   "identifier": "default",
-  "permissions": ["fs:allow-read-dir", "fs:allow-read-text-file", "fs:allow-write-text-file", "fs:allow-remove-file", "fs:allow-rename-file", "fs:allow-mkdir", "dialog:allow-open", "store:allow-load", "store:allow-save"]
+  "permissions": ["fs:allow-read-dir", "fs:allow-read-text-file", "fs:allow-write-text-file", "fs:allow-remove", "fs:allow-rename", "fs:allow-mkdir", "fs:allow-exists", { "identifier": "fs:scope", "allow": ["**"] }, "dialog:allow-open", "store:allow-load", "store:allow-save", "store:allow-get", "store:allow-set"]
 }
