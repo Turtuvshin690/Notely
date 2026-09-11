@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown'
 import { readTextFile, writeTextFile } from '../lib/fs'
 export default function EditorView({ path }: { path: string }) {
   const [text, setText] = useState('')
+  const [mode, setMode] = useState<'edit' | 'preview'>('edit')
   const [state, setState] = useState<'saved' | 'saving' | 'error'>('saved')
   const t = useRef<number | undefined>(undefined)
   const pending = useRef<{ path: string; text: string } | null>(null)
@@ -46,15 +47,24 @@ export default function EditorView({ path }: { path: string }) {
     try { await writeTextFile(p.path, p.text); pending.current = null; setState('saved') }
     catch { setState('error') }
   }
+  const name = path.split(/[/\\]/).pop() ?? path
   return (
-    <div className="editor">
-      <div className="pane edit"><CodeMirror value={text} extensions={[markdown()]} onChange={onChange} /></div>
-      <div className="pane preview"><div className="preview-inner"><ReactMarkdown>{text}</ReactMarkdown></div></div>
-      <div className="status">
-        <span className={`dot ${state}`} />
-        <span>{state}</span>
-        {state === 'error' && <button className="btn" onClick={retry}>Retry</button>}
+    <div className="note">
+      <div className="note-bar">
+        <span className="note-title" title={path}>{name}</span>
+        <div className="segment" role="tablist" aria-label="View mode">
+          <button role="tab" aria-selected={mode === 'edit'} className={mode === 'edit' ? 'active' : ''} onClick={() => setMode('edit')}>Write</button>
+          <button role="tab" aria-selected={mode === 'preview'} className={mode === 'preview' ? 'active' : ''} onClick={() => setMode('preview')}>Preview</button>
+        </div>
+        <div className="save-state">
+          <span className={`dot ${state}`} />
+          <span>{state}</span>
+          {state === 'error' && <button className="btn" onClick={retry}>Retry</button>}
+        </div>
       </div>
+      {mode === 'edit'
+        ? <div key="edit" className="pane edit enter"><CodeMirror value={text} extensions={[markdown()]} onChange={onChange} /></div>
+        : <div key="preview" className="pane preview enter"><div className="preview-inner"><ReactMarkdown>{text}</ReactMarkdown></div></div>}
     </div>
   )
 }

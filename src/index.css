@@ -1,23 +1,26 @@
+/* Shape rule: 8px for interactive (buttons, inputs, rows), 16px for cards,
+   999px for pills. Z-scale: content 0, search dropdown 20. */
+
 :root {
-  --bg: #faf8f3;
-  --surface: #ffffff;
-  --sidebar: #f2ede3;
-  --text: #4a443c;
-  --text-h: #211c16;
-  --muted: #8d8478;
-  --border: #e5dccb;
-  --hover: rgba(120, 90, 40, 0.08);
-  --accent: #b3541e;
-  --accent-hover: #93400f;
-  --accent-soft: rgba(179, 84, 30, 0.12);
+  --bg: #f2f4f1;
+  --surface: #fdfdfc;
+  --sidebar: #e9ede7;
+  --text: #3d4441;
+  --text-h: #17211c;
+  --muted: #75807a;
+  --border: #d9e0d8;
+  --hover: rgba(46, 90, 70, 0.08);
+  --accent: #2e7d5b;
+  --accent-hover: #256647;
+  --accent-soft: rgba(46, 125, 91, 0.13);
   --danger: #b3261e;
   --danger-soft: rgba(179, 38, 30, 0.1);
   --ok: #4a7c43;
   --radius: 10px;
-  --shadow: 0 1px 2px rgba(74, 58, 32, 0.08), 0 12px 32px rgba(74, 58, 32, 0.1);
+  --shadow: 0 1px 2px rgba(30, 55, 42, 0.08), 0 12px 32px rgba(30, 55, 42, 0.1);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --sans: 'Outfit Variable', 'Outfit', system-ui, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
 
   color-scheme: light dark;
   color: var(--text);
@@ -31,17 +34,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1b1815;
-    --surface: #242019;
-    --sidebar: #221e18;
-    --text: #c9c2b6;
-    --text-h: #f4efe7;
-    --muted: #9a9384;
-    --border: #3a332a;
-    --hover: rgba(255, 240, 220, 0.06);
-    --accent: #e0a458;
-    --accent-hover: #eeB96e;
-    --accent-soft: rgba(224, 164, 88, 0.14);
+    --bg: #101413;
+    --surface: #181d1b;
+    --sidebar: #141817;
+    --text: #bcc7c1;
+    --text-h: #edf3ef;
+    --muted: #8b968f;
+    --border: #2b342f;
+    --hover: rgba(210, 235, 220, 0.07);
+    --accent: #7fc9a4;
+    --accent-hover: #93d6b3;
+    --accent-soft: rgba(127, 201, 164, 0.15);
     --danger: #e08079;
     --danger-soft: rgba(224, 128, 121, 0.12);
     --ok: #8fc185;
@@ -99,20 +102,16 @@ button, input, textarea {
 .brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   padding: 2px 8px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--text-h);
 }
 
-.brand-mark {
-  width: 11px;
-  height: 11px;
-  border-radius: 4px;
-  background: var(--accent);
-  flex-shrink: 0;
+.brand-icon {
+  color: var(--accent);
 }
 
 .vault-name {
@@ -128,6 +127,10 @@ button, input, textarea {
 /* ---------- buttons & inputs ---------- */
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 1px solid var(--border);
   background: var(--surface);
   border-radius: 8px;
@@ -158,7 +161,7 @@ button, input, textarea {
 
 @media (prefers-color-scheme: dark) {
   .btn-primary {
-    color: #221a10;
+    color: #0e1a14;
   }
 }
 
@@ -176,14 +179,12 @@ button, input, textarea {
   position: relative;
 }
 
-.search-wrap::before {
-  content: '⌕';
+.search-icon {
   position: absolute;
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--muted);
-  font-size: 15px;
   pointer-events: none;
 }
 
@@ -193,7 +194,7 @@ button, input, textarea {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 7px 10px 7px 30px;
+  padding: 7px 10px 7px 32px;
   font-size: 13px;
   transition: border-color 180ms;
 }
@@ -250,7 +251,7 @@ button, input, textarea {
 .node {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   border-radius: 8px;
   padding: 5px 8px;
   font-size: 13.5px;
@@ -282,11 +283,13 @@ button, input, textarea {
   color: var(--text-h);
 }
 
-.twisty {
+.row-icon {
   color: var(--muted);
-  font-size: 10px;
-  width: 10px;
   flex-shrink: 0;
+}
+
+.node.selected .row-icon {
+  color: var(--accent);
 }
 
 .node .acts {
@@ -308,20 +311,25 @@ button, input, textarea {
 }
 
 .icon-btn {
+  display: inline-flex;
+  align-items: center;
   background: none;
   border: 0;
   border-radius: 6px;
   color: var(--muted);
   cursor: pointer;
-  font-size: 13px;
   line-height: 1;
-  padding: 3px 6px;
-  transition: background 150ms, color 150ms;
+  padding: 4px;
+  transition: background 150ms, color 150ms, transform 60ms;
 }
 
 .icon-btn:hover {
   background: var(--hover);
   color: var(--text-h);
+}
+
+.icon-btn:active {
+  transform: translateY(1px);
 }
 
 .icon-btn.danger:hover {
@@ -345,23 +353,80 @@ button, input, textarea {
   line-height: 1.5;
 }
 
-/* ---------- editor ---------- */
+/* ---------- note: single writing space ---------- */
 
-.editor {
+.note {
   display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
+  background: var(--surface);
+}
+
+.note-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.note-title {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.segment {
+  display: flex;
+  margin-left: auto;
+  background: var(--hover);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.segment button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 180ms, color 180ms;
+}
+
+.segment button.active {
+  background: var(--surface);
+  color: var(--text-h);
+  box-shadow: 0 1px 3px rgba(20, 40, 30, 0.15);
+}
+
+.save-state {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--muted);
+  min-width: 76px;
+  justify-content: flex-end;
+}
+
+.save-state .btn {
+  padding: 2px 10px;
+  font-size: 12px;
 }
 
 .pane {
   flex: 1;
-  min-width: 0;
+  min-height: 0;
   overflow: auto;
-}
-
-.pane.edit {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
 }
 
 .pane.edit .cm-editor {
@@ -370,12 +435,39 @@ button, input, textarea {
 }
 
 .pane.edit .cm-content {
-  line-height: 1.7;
-  padding: 20px 0;
+  font-family: var(--sans);
+  line-height: 1.75;
+  padding: 22px 0;
+  max-width: 72ch;
+}
+
+.pane.edit .cm-line {
+  padding: 0 28px;
 }
 
 .pane.preview {
   padding: 26px 34px 60px;
+}
+
+.enter {
+  animation: rise 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter {
+    animation: none;
+  }
+
+  .dot.saving {
+    animation: none;
+  }
 }
 
 .preview-inner {
@@ -451,23 +543,7 @@ button, input, textarea {
   border-top: 1px solid var(--border);
 }
 
-.status {
-  position: fixed;
-  bottom: 14px;
-  right: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-  font-size: 12.5px;
-  color: var(--muted);
-  padding: 6px 13px;
-}
-
-.status .dot {
+.dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -493,11 +569,6 @@ button, input, textarea {
   }
 }
 
-.status .btn {
-  padding: 2px 10px;
-  font-size: 12px;
-}
-
 /* ---------- centered screens ---------- */
 
 .center {
@@ -518,6 +589,7 @@ button, input, textarea {
   max-width: 400px;
   width: 100%;
   text-align: center;
+  animation: rise 280ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card h1 {

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { CaretDown, FileText, FolderPlus, PencilSimple, Plus, Trash } from '@phosphor-icons/react'
 import type { TreeNode } from '../lib/fs'
 import { createNote, renameNote, removeNote, mkdirDir, parentDir, ensureMd, noteExists } from '../lib/fs'
 type Props = { vault: string; tree: TreeNode[]; selected?: string | null; onSelect: (p: string) => void; onChanged: () => void }
@@ -46,14 +47,15 @@ export default function Sidebar({ vault, tree, selected, onSelect, onChanged }: 
           onClick={() => !n.isDir && onSelect(n.path)}
           style={{ paddingLeft: 8 + depth * 14 }}
         >
-          {!n.isDir && <span className="twisty">⋯</span>}
+          {!n.isDir && <FileText size={14} className="row-icon" />}
+          {n.isDir && <CaretDown size={11} className="row-icon" />}
           <span className="label">{n.name}</span>
           <span className="acts">
-            <button className="icon-btn" title="Rename" onClick={(e) => { e.stopPropagation(); void renameNode(n) }}>✎</button>
-            <button className="icon-btn danger" title="Delete" onClick={(e) => { e.stopPropagation(); void del(n) }}>×</button>
+            <button className="icon-btn" title="Rename" onClick={(e) => { e.stopPropagation(); void renameNode(n) }}><PencilSimple size={14} /></button>
+            <button className="icon-btn danger" title="Delete" onClick={(e) => { e.stopPropagation(); void del(n) }}><Trash size={14} /></button>
             {n.isDir && <>
-              <button className="icon-btn" title="New note here" onClick={(e) => { e.stopPropagation(); void createIn(n.path) }}>+</button>
-              <button className="icon-btn" title="New folder here" onClick={(e) => { e.stopPropagation(); void mkDir(n.path) }}>⊞</button>
+              <button className="icon-btn" title="New note here" onClick={(e) => { e.stopPropagation(); void createIn(n.path) }}><Plus size={14} /></button>
+              <button className="icon-btn" title="New folder here" onClick={(e) => { e.stopPropagation(); void mkDir(n.path) }}><FolderPlus size={14} /></button>
             </>}
           </span>
         </div>
@@ -63,8 +65,8 @@ export default function Sidebar({ vault, tree, selected, onSelect, onChanged }: 
   return (
     <>
       <div className="actions-row">
-        <button className="btn" onClick={() => void createIn(vault)}>+ New</button>
-        <button className="btn" onClick={() => void mkDir(vault)}>+ Folder</button>
+        <button className="btn" onClick={() => void createIn(vault)}><Plus size={14} /> New</button>
+        <button className="btn" onClick={() => void mkDir(vault)}><FolderPlus size={14} /> Folder</button>
       </div>
       {err && <div className="alert" role="alert">{err}</div>}
       <div className="tree">

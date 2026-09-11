@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Notebook } from '@phosphor-icons/react'
 import Sidebar from './components/Sidebar'
 import EditorView from './components/EditorView'
 import SearchBar from './components/SearchBar'
@@ -13,7 +14,7 @@ export function AppShell({ vault, tree, refresh }: { vault: string; tree: TreeNo
   return (
     <div className="app">
       <aside className="side">
-        <div className="brand"><span className="brand-mark" />Notely</div>
+        <div className="brand"><Notebook size={18} weight="duotone" className="brand-icon" />Notely</div>
         <div className="vault-name" title={vault}>{vaultName}</div>
         <SearchBar tree={tree} onSelect={setSel} />
         <Sidebar vault={vault} tree={tree} selected={sel} onSelect={setSel} onChanged={refresh} />
