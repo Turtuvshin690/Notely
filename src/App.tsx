@@ -28,7 +28,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const refresh = useCallback(async (v: string) => {
     try { setTree(await readTree(v)); setError(null) }
-    catch { setError('Could not read vault folder. It may have moved or permissions changed.') }
+    catch (e) { setError(`Could not read vault folder: ${e instanceof Error ? e.message : 'failed'}`) }
   }, [])
   useEffect(() => {
     ;(async () => {
@@ -36,7 +36,7 @@ export default function App() {
         const s = await load('notely.dat')
         const v = await s?.get<string>('vault')
         if (v) { setVault(v); await refresh(v) }
-      } catch { setError('Could not load saved vault.') }
+      } catch (e) { setError(`Could not load saved vault: ${e instanceof Error ? e.message : 'failed'}`) }
     })()
   }, [refresh])
   const pick = async () => {
@@ -46,7 +46,7 @@ export default function App() {
       const s = await load('notely.dat')
       await s.set('vault', v); await s.save()
       setVault(v); await refresh(v)
-    } catch { setError('Could not open folder.') }
+    } catch (e) { setError(`Could not open folder: ${e instanceof Error ? e.message : 'failed'}`) }
   }
   const repick = async () => {
     setError(null); setVault(null); setTree([])
