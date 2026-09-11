@@ -23,7 +23,8 @@ describe('App vault', () => {
     expect(await screen.findByRole('button', { name: /open folder/i })).toBeTruthy()
   })
   it('surfaces the underlying pick failure instead of a bare message', async () => {
-    openMock.mockRejectedValue(new Error('dialog blocked in test'))
+    // Tauri rejects with a plain string, not an Error — the UI must show it.
+    openMock.mockRejectedValue('dialog blocked in test')
     render(<App />)
     fireEvent.click(await screen.findByRole('button', { name: /open folder/i }))
     expect(await screen.findByText(/dialog blocked in test/)).toBeTruthy()

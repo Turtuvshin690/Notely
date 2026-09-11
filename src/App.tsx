@@ -5,6 +5,8 @@ import SearchBar from './components/SearchBar'
 import { pickVault, readTree } from './lib/fs'
 import type { TreeNode } from './lib/fs'
 import { load } from '@tauri-apps/plugin-store'
+// Tauri invoke() rejects with a plain string, not an Error — handle both.
+const errMsg = (e: unknown) => typeof e === 'string' ? e : e instanceof Error ? e.message : 'failed'
 export function AppShell({ vault, tree, refresh }: { vault: string; tree: TreeNode[]; refresh: () => void }) {
   const [sel, setSel] = useState<string | null>(null)
   const vaultName = vault.split(/[/\\]/).filter(Boolean).pop() ?? vault
@@ -28,7 +30,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const refresh = useCallback(async (v: string) => {
     try { setTree(await readTree(v)); setError(null) }
-    catch (e) { setError(`Could not read vault folder: ${e instanceof Error ? e.message : 'failed'}`) }
+    catch (e) { setError(`Could not read vault folder: ${errMsg(e)}`) }
   }, [])
   useEffect(() => {
     ;(async () => {
@@ -36,7 +38,7 @@ export default function App() {
         const s = await load('notely.dat')
         const v = await s?.get<string>('vault')
         if (v) { setVault(v); await refresh(v) }
-      } catch (e) { setError(`Could not load saved vault: ${e instanceof Error ? e.message : 'failed'}`) }
+      } catch (e) { setError(`Could not load saved vault: ${errMsg(e)}`) }
     })()
   }, [refresh])
   const pick = async () => {
@@ -46,7 +48,7 @@ export default function App() {
       const s = await load('notely.dat')
       await s.set('vault', v); await s.save()
       setVault(v); await refresh(v)
-    } catch (e) { setError(`Could not open folder: ${e instanceof Error ? e.message : 'failed'}`) }
+    } catch (e) { setError(`Could not open folder: ${errMsg(e)}`) }
   }
   const repick = async () => {
     setError(null); setVault(null); setTree([])
