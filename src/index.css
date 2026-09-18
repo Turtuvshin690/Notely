@@ -692,3 +692,9 @@ button, input, textarea {
 .split .split-edit { border-right: 1px solid var(--border); }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; } .split .split-edit { border-right: 0; border-bottom: 1px solid var(--border); } }
 .status-counts { color: var(--muted); font-size: 12px; }
+
+.search-hit.active { background: var(--hover); color: var(--text-h); }
+.hit-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hit-snippet { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tag-pills { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 2px; }
+.tag-pill { border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 2px 10px; font-size: 12px; color: var(--accent); cursor: pointer; }
