@@ -27,4 +27,11 @@ describe('SearchBar', () => {
     await act(async () => { await new Promise((r) => setTimeout(r, 200)) })
     expect(screen.getByText('n.md')).toBeTruthy()
   })
+  it('shows tag pills for bare #', async () => {
+    render(<SearchBar tree={[{ name: 'n.md', path: '/v/n.md', isDir: false }]} onSelect={() => {}} />)
+    await act(async () => { await new Promise((r) => setTimeout(r, 10)) })
+    fireEvent.change(screen.getByPlaceholderText(/search/i), { target: { value: '#' } })
+    await act(async () => { await new Promise((r) => setTimeout(r, 10)) })
+    expect(screen.getByText('#honey')).toBeTruthy()
+  })
 })

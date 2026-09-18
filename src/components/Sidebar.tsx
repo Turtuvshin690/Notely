@@ -82,7 +82,7 @@ export default function Sidebar({ vault, tree, selected, pinned, recent, collaps
       )
     })
   const secRow = (p: string, icon: ReactNode) => (
-    <div key={p} className="node" onClick={() => onSelect(p)}>
+    <div key={p} className="node" title={p} onClick={() => onSelect(p)}>
       {icon}
       <span className="label">{base(p)}</span>
     </div>

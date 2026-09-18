@@ -83,6 +83,7 @@ export default function EditorView({ path }: { path: string }) {
     if (!mod) return
     if (e.key.toLowerCase() === 's') { e.preventDefault(); void retry() }
     if (e.key.toLowerCase() === 'e') { e.preventDefault(); cycleMode() }
+    if (mode === 'preview' && (e.key.toLowerCase() === 'b' || e.key.toLowerCase() === 'i')) return
     if (e.key.toLowerCase() === 'b') { e.preventDefault(); wrapSelection('**', '**') }
     if (e.key.toLowerCase() === 'i') { e.preventDefault(); wrapSelection('_', '_') }
   }

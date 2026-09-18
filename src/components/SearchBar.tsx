@@ -68,7 +68,7 @@ export default function SearchBar({ tree, onSelect }: { tree: TreeNode[]; onSele
           if (e.key === 'Enter' && res[active]) { onSelect(res[active].path); setQ('') }
           if (e.key === 'Escape') setQ('')
         }} />
-      {(dq === '' || dq === '#') && tags.length > 0 && !q && <div className="tag-pills">{tags.map((t) => <button key={t} className="tag-pill" onClick={() => setQ(t)}>{t}</button>)}</div>}
+      {(dq === '' || dq === '#') && tags.length > 0 && (q===''||q==='#') && <div className="tag-pills">{tags.map((t) => <button key={t} className="tag-pill" onClick={() => setQ(t)}>{t}</button>)}</div>}
       {res.length > 0 && <div className="search-results" role="listbox">
         {res.map((r, i) => {
           const sn = !isTag && needle ? findSnippet(contents[r.path] ?? '', needle) : extractTags(contents[r.path] ?? '').join(' ')
