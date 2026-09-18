@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import Sidebar from './Sidebar'
 const noop = () => {}
 describe('Sidebar', () => {
@@ -14,5 +14,14 @@ describe('Sidebar', () => {
       ] },
     ] }]} onSelect={noop} onChanged={noop} />)
     expect(screen.getByText('n.md')).toBeTruthy()
+  })
+  it('opens modal instead of prompt on New', () => {
+    render(<Sidebar vault="/v" tree={[]} onSelect={() => {}} onChanged={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: /new/i }))
+    expect(screen.getByRole('dialog')).toBeTruthy()
+  })
+  it('renders pinned section', () => {
+    render(<Sidebar vault="/v" tree={[{ name: 'a.md', path: '/v/a.md', isDir: false }]} pinned={['/v/a.md']} onSelect={() => {}} onChanged={() => {}} />)
+    expect(screen.getByText(/pinned/i)).toBeTruthy()
   })
 })
