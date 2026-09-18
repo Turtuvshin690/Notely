@@ -685,3 +685,10 @@ button, input, textarea {
 .modal-input:focus { outline: none; border-color: var(--accent); }
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
 .btn-danger { background: var(--danger); border-color: transparent; color: #fff; }
+.toolbar { display: flex; gap: 4px; padding: 6px 12px; border-bottom: 1px solid var(--border); background: var(--surface); }
+.toolbar .icon-btn { font-size: 12.5px; font-weight: 700; padding: 4px 8px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; flex: 1; min-height: 0; }
+.split .pane { overflow: auto; }
+.split .split-edit { border-right: 1px solid var(--border); }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; } .split .split-edit { border-right: 0; border-bottom: 1px solid var(--border); } }
+.status-counts { color: var(--muted); font-size: 12px; }
