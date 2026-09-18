@@ -344,6 +344,21 @@ button, input, textarea {
   line-height: 1.6;
 }
 
+.side-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.side-sec-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 8px 2px;
+}
+
 .alert {
   background: var(--danger-soft);
   color: var(--danger);

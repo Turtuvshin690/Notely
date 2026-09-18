@@ -35,7 +35,7 @@ export function AppShell({ vault, tree, refresh, onOpenNote }: { vault: string; 
         <Sidebar vault={vault} tree={tree} selected={sel} pinned={meta.pinned} recent={meta.recent} collapsed={meta.collapsed} onSelect={handleSelect} onChanged={refresh} onTogglePin={(p) => persist(togglePin(meta, p))} onToggleCollapse={(d) => persist(toggleCollapse(meta, d))} />
       </aside>
       <main className="main">
-        {sel ? <EditorView key={sel} path={sel} /> : <div className="empty"><strong>Select a note</strong>Choose a note from the sidebar, or create a new one.</div>}
+        {sel ? <EditorView key={sel} path={sel} /> : <div className="empty"><strong>Select a note</strong>Choose a note from the sidebar, pin favorites to the top — Ctrl+S saves, Ctrl+E toggles preview.</div>}
       </main>
     </div>
   )

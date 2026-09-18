@@ -26,6 +26,9 @@
 | 🗂️ **Real file tree** | Create, rename, and delete notes and folders inline. Folders sort first, A→Z. |
 | 🌗 **Light / dark** | Follows your OS theme. Warm paper look, no setup. |
 | 🔒 **Private by design** | Nothing leaves your machine. Vault path is remembered locally only. |
+| 📌 **Pins + recents** | Pin notes to the top; recent files follow you per vault. |
+| ✂️ **Split + toolbar** | Write/preview/split, markdown toolbar, `Ctrl+S/E/B/I` shortcuts, word count. |
+| 🏷️ **Tags + search v2** | `#tag` filter, snippets, keyboard nav (`↑↓ Enter Esc`). |
 
 ## 🚀 Quick start
 
