@@ -677,3 +677,11 @@ button, input, textarea {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(20,30,25,.4); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); padding: 20px; width: min(380px, 90vw); animation: rise 180ms cubic-bezier(.16,1,.3,1); }
+.modal-title { margin: 0 0 8px; font-size: 16px; color: var(--text-h); }
+.modal-body { margin: 0 0 12px; color: var(--muted); font-size: 13.5px; word-break: break-all; }
+.modal-input { width: 100%; box-sizing: border-box; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13.5px; }
+.modal-input:focus { outline: none; border-color: var(--accent); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.btn-danger { background: var(--danger); border-color: transparent; color: #fff; }
